@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver's License Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Driver's License Form</h1>
+    <input type="text" id="barcodeInput" placeholder="Scan barcode here" />
+    <button onclick="handleScan()" >Decode Barcode</button>
+
+    <form onsubmit="event.preventDefault(); submitForm();">
+        <label><center>Customer Number to add Driver to:</center></label>
+        <label>Customer Number: <input type="number" id="customer_number" name="customer_number" /></label><br>
+        <h2>Driver's License Data</h2>
+        <label>First Name: <input type="text" id="first_name" name="first_name" /></label><br>
+        <label>Last Name: <input type="text" id="last_name" name="last_name" /></label><br>
+        <label>License Number: <input type="text" id="license_number" name="license_number" /></label><br>
+        <div class="three-col">
+            <div class="col1">
+                <label>DOB: <input type="date" id="dob" name="dob" /></label><br>
+            </div>
+            <div class="col2">
+                <label>Date Issued: <input type="date" id="date_issued" name="date_issued" /></label>
+            </div>
+            <div class="col3">
+                <label>Exp Date: <input type="date" id="expiration_date" name="expiration_date" /></label><br>
+            </div>
+        </div>
+        <label>Address: <input type="text" id="address" name="address" /></label><br>
+        <label>City: <input type="text" id="city" name="city" /></label><br>
+        <div class="two-col">
+            <div class="col1">
+                <label>State: <input type="text" id="state" name="state" /></label>
+            </div>
+            <div class="col2">
+                <label>Zip: <input type="text" id="zip" name="zip" /></label><br>
+            </div>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
