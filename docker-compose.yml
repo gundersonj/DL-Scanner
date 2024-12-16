@@ -10,3 +10,4 @@ services:
     volumes:
       - .:/app
     command: flask run
+    restart: always

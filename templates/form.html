@@ -8,12 +8,12 @@
 </head>
 <body>
     <h1>Driver's License Form</h1>
-    <input type="text" id="barcodeInput" placeholder="Scan barcode here" />
+    <input type="text" id="barcodeInput" placeholder="Scan barcode here" autofocus />
     <button onclick="handleScan()" >Decode Barcode</button>
 
     <form onsubmit="event.preventDefault(); submitForm();">
         <label><center>Customer Number to add Driver to:</center></label>
-        <label>Customer Number: <input type="number" id="customer_number" name="customer_number" /></label><br>
+        <label>Customer Number: <input type="number" id="customer_number" name="customer_number" required /></label><br>
         <h2>Driver's License Data</h2>
         <label>First Name: <input type="text" id="first_name" name="first_name" /></label><br>
         <label>Last Name: <input type="text" id="last_name" name="last_name" /></label><br>

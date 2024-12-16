@@ -120,7 +120,7 @@ def submit():
         
         conn.close()
         
-        return jsonify({"status": "success", "response": contact})
+        # return jsonify({"status": "success", "response": contact})
         
         # Post data to api
         response = requests.post(url, headers=headers, json=contact)
