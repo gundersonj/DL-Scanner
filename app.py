@@ -1,8 +1,8 @@
 import os
 import re
 import json
-import requests
 import sqlite3
+import requests
 from datetime import datetime
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify, redirect, url_for
@@ -12,29 +12,31 @@ por_api_key = os.getenv("POR_API_KEY")
 
 app = Flask(__name__)
 
+# Format date to YYYY-MM-DD
 def format_date(date_str):
     try:
         # Trim unexpected characters
-        clean_date = date_str[:8]  # Only take the first 6 characters
+        clean_date = date_str[:8]  # Only take the first 8 characters
         return datetime.strptime(clean_date, "%m%d%Y").strftime("%Y-%m-%d")
     except ValueError:
         return date_str 
     
+# Create contact api post data
 def create_contact(data):
     contact = {
-        'Name': f"{data['first_name']} {data['last_name']}",
-        'Identifiers': {
-            'DriversLicense': data['license_number'],
-            'ParentId': data['parent_id']
-        },
-        'Title': 'Driver',
-    }
+            'Name': f"{data['first_name']} {data['last_name']}",
+            'Title': 'Driver',
+            'Identifiers': {
+                'DriversLicense': data['license_number'],
+                'ParentId': data['customer_number']
+            },
+        }
     
     return contact
 
-# Mock barcode decoding function
+# Function to decode barcode data
 def decode_barcode(barcode_data):
-    # Relevant data re patterns
+    # Re patterns to extract data from barcode
     re_patterns = {
         'first_name': r'DAC(.*?)DDFN',
         'last_name': r'DCS(.*?)DDEN',
@@ -49,9 +51,10 @@ def decode_barcode(barcode_data):
         'sex': r'DBC(\d)',
     }
 
-    # Decode string
+    # Create empty dict to store extracted data
     data = {}
-
+    
+    # Loop through re patterns and extract data
     for key, pattern in re_patterns.items():
         match = re.search(pattern, barcode_data)
         if match:
@@ -91,14 +94,7 @@ def submit():
         form_data_json = request.json
         
         # Create contact api post data
-        contact = {
-            'Name': f"{form_data_json['first_name']} {form_data_json['last_name']}",
-            'Title': 'Driver',
-            'Identifiers': {
-                'DriversLicense': form_data_json['license_number'],
-                'ParentId': form_data_json['customer_number']
-            },
-        }
+        contact = create_contact(form_data_json)
         
         # Headers dict required for api post
         headers = {
@@ -119,8 +115,6 @@ def submit():
         conn.commit()
         
         conn.close()
-        
-        # return jsonify({"status": "success", "response": contact})
         
         # Post data to api
         response = requests.post(url, headers=headers, json=contact)
